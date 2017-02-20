@@ -29,6 +29,19 @@ void add(struct Env *curr, char var[8], int constant) {
     }
 }
 
+struct Env *copy_a(struct Env *curr, struct Env *new);
+
+struct Env *copy(struct Env *curr) {
+    struct Env *new = calloc(sizeof(struct Env), 1);
+    return copy_a(curr, new);
+}
+
+struct Env *copy_a(struct Env *curr, struct Env *new) {
+    if(!curr -> next) return new;
+    add(new, curr -> var, curr -> constant);
+    return copy_a(curr -> next, new);
+}
+
 // Return the value of a given constant, var, or
 // -1 if var has no associated constant
 int val(struct Env *curr, char var[8]) {
@@ -42,9 +55,10 @@ int evalexplistenv(struct explist *es, enum op op, struct Env *env);
 int evalexpenv(struct exp *e, struct Env *env) {
     enum exptag c_tag = e -> tag;
     if(c_tag == islet) {
-        // add to the current env
-        add(env, e -> bvar, evalexpenv(e -> bexp, env));
-        return evalexpenv(e -> body, env);
+        // copy current env and add to that
+        struct Env *cpy = copy(env);
+        add(cpy, e -> bvar, evalexpenv(e -> bexp, cpy));
+        return evalexpenv(e -> body, cpy);
     }
     if(c_tag == isconstant) return e -> constant;
     if(c_tag == isvar) {
