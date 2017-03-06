@@ -31,8 +31,6 @@ int evalexplist(ExpList *exps, env *env, enum op op) {
     return -1;
 }
 
-env *pop(env *e) { return e->next; }
-
 int Constant::eval(env *env) { return n; }
 
 int Var::eval(env *env) { return val(env, name); }
@@ -40,7 +38,6 @@ int Var::eval(env *env) { return val(env, name); }
 int OpApp::eval(env *env) { return evalexplist(args, env, op); }
 
 int Let::eval(env *env) { 
-   int res = body->eval((add(env, bvar, bexp->eval(env)))); 
-   pop(env);
+   int res = body->eval((add(env, bvar, bexp->eval(env))));
    return res;
 } 

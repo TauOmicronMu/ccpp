@@ -27,10 +27,15 @@ int main(int argc, const char *argv[])
             );
 
     assert(constant->eval(nullptr) == 355);
+    printf("test 1 passed\n");
     assert(plus->eval(nullptr) == 30);
+    printf("test 2 passed\n");
     assert(mult->eval(nullptr) == 48);
+    printf("test 3 passed\n");
     assert(let->eval(nullptr) == 4);
+    printf("test 4 passed\n");
     assert(complex->eval(nullptr) == 375);
+    printf("test 5 passed\n");
 
     return 0;
 }
