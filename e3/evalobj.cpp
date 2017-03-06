@@ -37,7 +37,4 @@ int Var::eval(env *env) { return val(env, name); }
 
 int OpApp::eval(env *env) { return evalexplist(args, env, op); }
 
-int Let::eval(env *env) { 
-   int res = body->eval((add(env, bvar, bexp->eval(env))));
-   return res;
-} 
+int Let::eval(env *env) { return body->eval((add(env, bvar, bexp->eval(env)))); } 
